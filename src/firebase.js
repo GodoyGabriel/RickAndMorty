@@ -1,18 +1,25 @@
 import firebase from "firebase/app";
 import "firebase/auth";
+import "firebase/firestore";
 
 let firebaseConfig = {
-  apiKey: "AIzaSyD8nT4-iblf2XJT6rKJs2FUjm7Ww-gN6gU",
-  authDomain: "rickandmorty-1efea.firebaseapp.com",
-  projectId: "rickandmorty-1efea",
-  storageBucket: "rickandmorty-1efea.appspot.com",
-  messagingSenderId: "389630966570",
-  appId: "1:389630966570:web:3c4c86fbbc3ed08e577c53",
-  measurementId: "G-W5TMR8CVFY",
+  apiKey: "AIzaSyC0dXdesWfW7UMqVJQwR6uyiFdyHmY9sEU",
+  authDomain: "rickandmorty-1b6ea.firebaseapp.com",
+  projectId: "rickandmorty-1b6ea",
+  storageBucket: "rickandmorty-1b6ea.appspot.com",
+  messagingSenderId: "630069409937",
+  appId: "1:630069409937:web:6bd0d58e6b9f27b55be730",
+  measurementId: "G-SXN3LNWDRK"
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 //firebase.analytics();
+
+let db = firebase.firestore().collection('favs');
+
+export function updateDB(array, uid) {
+  return db.doc(uid).set({ favoritos: [...array] });
+}
 
 export function loginWithGoogle() {
   let provider = new firebase.auth.GoogleAuthProvider();
@@ -22,6 +29,6 @@ export function loginWithGoogle() {
     .then((snap) => snap.user);
 }
 
-export function signOutGoogle(){
+export function signOutGoogle() {
   firebase.auth().signOut();
 }

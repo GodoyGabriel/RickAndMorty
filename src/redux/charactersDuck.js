@@ -1,4 +1,5 @@
 import http from "axios";
+import { updateDB } from '../firebase';
 
 // constants
 const initialData = {
@@ -40,8 +41,10 @@ export default function reducer(state = initialData, action) {
 // Actions (thunks)
 export const addToFavoritesAction = () => (dispatch, getState) => {
   let { array, favorites } = getState().characters;
+  let { uid } = getState().user;
   let character = array.shift();
   favorites.push(character);
+  updateDB(favorites, uid);
   // For inmutability spread operator
   dispatch({
     type: ADD_TO_FAVORITES,
