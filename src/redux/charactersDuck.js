@@ -1,9 +1,10 @@
 import http from "axios";
-import { updateDB } from '../firebase';
+import { updateDB, getFavorites } from "../firebase";
 
 // constants
 const initialData = {
   fetching: false,
+  fetchingFavs: false,
   array: [],
   current: {},
   favorites: [],
@@ -16,6 +17,9 @@ const GET_CHARACTERS_SUCCESS = "GET_CHARACTERS_SUCCESS";
 const GET_CHARACTERS_ERROR = "GET_CHARACTERS_ERROR";
 const REMOVE_CHARACTER = "REMOVE_CHARACTER";
 const ADD_TO_FAVORITES = "ADD_TO_FAVORITES";
+const GET_FAVORITES = "GET_FAVORITES";
+const GET_FAVORITES_SUCCESS = "GET_FAVORITES_SUCCESS";
+const GET_FAVORITES_ERROR = "GET_FAVORITES_ERROR";
 
 // Reducer
 export default function reducer(state = initialData, action) {
@@ -28,6 +32,12 @@ export default function reducer(state = initialData, action) {
       return { ...state, fetching: false, error: action.payload };
     case REMOVE_CHARACTER:
       return { ...state, array: action.payload };
+    case GET_FAVORITES:
+      return { ...state, fetchingFavs: true };
+    case GET_FAVORITES_SUCCESS:
+      return { ...state, fetchingFavs: false, favorites: action.payload };
+    case GET_FAVORITES_ERROR:
+      return { ...state, fetchingFavs: false, error: action.payload };
     case ADD_TO_FAVORITES:
       return {
         ...state,
@@ -39,6 +49,27 @@ export default function reducer(state = initialData, action) {
 }
 
 // Actions (thunks)
+export const retreiveFavsAction = () => (dispatch, getState) => {
+  dispatch({
+    type: GET_FAVORITES,
+  });
+  const { uid } = getState.user ? getState.user : getState().user;
+  return getFavorites(uid)
+    .then((array) => {
+      dispatch({
+        type: GET_FAVORITES_SUCCESS,
+        payload: [...array],
+      });
+    })
+    .catch((e) => {
+      console.log(e);
+      dispatch({
+        type: GET_FAVORITES_ERROR,
+        payload: e.message,
+      });
+    });
+};
+
 export const addToFavoritesAction = () => (dispatch, getState) => {
   let { array, favorites } = getState().characters;
   let { uid } = getState().user;

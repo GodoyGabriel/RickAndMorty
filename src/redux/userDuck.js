@@ -1,4 +1,5 @@
 import { loginWithGoogle, signOutGoogle } from "../firebase";
+import { retreiveFavsAction } from './charactersDuck';
 
 // Constant
 const LOGIN = "LOGIN";
@@ -43,6 +44,7 @@ export const doGoogleLoginAction = () => (dispatch, getState) => {
         },
       });
       saveStorage(getState());
+      retreiveFavsAction()(dispatch, getState);
     })
     .catch((error) => {
       console.log(error);
@@ -53,9 +55,7 @@ export const doGoogleLoginAction = () => (dispatch, getState) => {
     });
 };
 
-export const restoreSessionAction = () => (dispatch) => {
-  let storage = localStorage.getItem("storage");
-  storage = JSON.parse(storage);
+export const restoreSessionAction = () => (dispatch, storage) => {
   if (storage && storage.user) {
     dispatch({
       type: LOGIN_SUCCESS,

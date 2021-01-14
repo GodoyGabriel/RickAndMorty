@@ -9,16 +9,25 @@ let firebaseConfig = {
   storageBucket: "rickandmorty-1b6ea.appspot.com",
   messagingSenderId: "630069409937",
   appId: "1:630069409937:web:6bd0d58e6b9f27b55be730",
-  measurementId: "G-SXN3LNWDRK"
+  measurementId: "G-SXN3LNWDRK",
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 //firebase.analytics();
 
-let db = firebase.firestore().collection('favs');
+let db = firebase.firestore().collection("favs");
+
+export function getFavorites(uid) {
+  return db
+    .doc(uid)
+    .get()
+    .then((snap) => {
+      return snap.data().favorites;
+    });
+}
 
 export function updateDB(array, uid) {
-  return db.doc(uid).set({ favoritos: [...array] });
+  return db.doc(uid).set({ favorites: [...array] });
 }
 
 export function loginWithGoogle() {

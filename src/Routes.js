@@ -19,7 +19,7 @@ export default function Routes() {
   return (
     <Switch>
       <PrivateRoute exact path="/" component={Home} />
-      <PrivateRoute path="/favs" component={FavPage} />
+      <PrivateRoute path="/favorites" component={FavPage} />
       <Route path="/login" component={LoginPage} />
     </Switch>
   );

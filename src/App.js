@@ -10,7 +10,7 @@ function App() {
         <NavLink className="link" activeClassName="active" exact to="/">
           Inicio
         </NavLink>
-        <NavLink className="link" activeClassName="active" to="/favs">
+        <NavLink className="link" activeClassName="active" to="/favorites">
           Favoritos
         </NavLink>
         <NavLink className="link" activeClassName="active" to="/login">
