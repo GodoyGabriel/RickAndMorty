@@ -53,21 +53,24 @@ export const retreiveFavsAction = () => (dispatch, getState) => {
   dispatch({
     type: GET_FAVORITES,
   });
-  const { uid } = getState.user ? getState.user : getState().user;
-  return getFavorites(uid)
-    .then((array) => {
-      dispatch({
-        type: GET_FAVORITES_SUCCESS,
-        payload: [...array],
+  console.log()
+  if(getState) {
+    const { uid } = getState.user ? getState.user : getState().user;
+    return getFavorites(uid)
+      .then((array) => {
+        dispatch({
+          type: GET_FAVORITES_SUCCESS,
+          payload: [...array],
+        });
+      })
+      .catch((e) => {
+        console.log(e);
+        dispatch({
+          type: GET_FAVORITES_ERROR,
+          payload: e.message,
+        });
       });
-    })
-    .catch((e) => {
-      console.log(e);
-      dispatch({
-        type: GET_FAVORITES_ERROR,
-        payload: e.message,
-      });
-    });
+  }
 };
 
 export const addToFavoritesAction = () => (dispatch, getState) => {
